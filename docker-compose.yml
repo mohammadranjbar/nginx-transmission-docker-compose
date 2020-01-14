@@ -1,0 +1,36 @@
+version: "2"
+services:
+  transmission:
+    image: linuxserver/transmission
+    container_name: transmission
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Tehran
+      - TRANSMISSION_WEB_HOME=/combustion-release/ #optional
+      - USER=username #optional
+      - PASS=password #optional
+    volumes:
+#     - path to data:/config
+      - /var/www:/downloads
+#     - path to watch folder:/watch
+    ports:
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+    restart: unless-stopped
+
+
+
+  nginxtransmission:
+    image: bitnami/nginx:latest
+    restart: unless-stopped
+    container_name: nginxtransmission
+    command:  /run.sh
+    volumes:
+      - /var/www:/www/data
+      - ./vhosts:/opt/bitnami/nginx/conf/vhosts
+#      - ./vhosts/bitnami.conf:/opt/bitnami/nginx/conf/server_blocks/my_server_block.conf:ro
+    ports:
+      - "8080:8080"
+

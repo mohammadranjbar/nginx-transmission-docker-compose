@@ -16,8 +16,8 @@ services:
 #     - path to watch folder:/watch
     ports:
       - 9091:9091
-      - 51413:51413
-      - 51413:51413/udp
+#      - 51413:51413
+#      - 51413:51413/udp
     restart: unless-stopped
 
 

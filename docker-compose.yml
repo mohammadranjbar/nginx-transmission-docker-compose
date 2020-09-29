@@ -11,26 +11,23 @@ services:
       - USER=username #optional
       - PASS=password #optional
     volumes:
-#     - path to data:/config
+      #     - path to data:/config
       - /var/www:/downloads
-#     - path to watch folder:/watch
+    #     - path to watch folder:/watch
     ports:
       - 9091:9091
-#      - 51413:51413
-#      - 51413:51413/udp
+      - 51413:51413
+      - 51413:51413/udp
     restart: unless-stopped
 
 
 
-  nginxtransmission:
-    image: bitnami/nginx:latest
+  serve:
+    image: node:10-alpine
     restart: unless-stopped
-    container_name: nginxtransmission
-    command:  /run.sh
+    container_name: serve
     volumes:
-      - /var/www:/www/data
-      - ./vhosts:/opt/bitnami/nginx/conf/vhosts
-#      - ./vhosts/bitnami.conf:/opt/bitnami/nginx/conf/server_blocks/my_server_block.conf:ro
+      - /var/www:/downloads
+    command: bash -c "npm i -g serve && serve -l 5000 /downloads"
     ports:
-      - "8080:8080"
-
+      - "9090:5000"
